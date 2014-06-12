@@ -3,7 +3,11 @@ from django.db.models import *
 from django.contrib.auth.models import User
 from django.contrib import admin
 from django.db.models.signals import post_save
-
+import datetime
+from datetime import timedelta
+Date=datetime.datetime.now()
+Enddate=Date+datetime.timedelta(days=1)
+Invaliddate=Date-datetime.timedelta(days=1)
 class UserProfile(models.Model):
 	tab_id=models.IntegerField(primary_key=True)
 	#username=models.CharField(max_length=20)
@@ -117,11 +121,11 @@ class Ticket(models.Model):
 	topic_id=models.ForeignKey(Category)
 	message=models.TextField(help_text="enter message")
 	ticket_id = models.AutoField(primary_key=True)
-	created_date_time=models.DateTimeField(auto_now_add=True)
-	overdue_date_time=models.DateTimeField(auto_now_add=True)
-	closed_date_time=models.DateTimeField(auto_now_add=True)
+	created_date_time=models.DateTimeField(auto_now_add=False,default=Date)
+	overdue_date_time=models.DateTimeField(auto_now_add=False,default=Enddate)
+	closed_date_time=models.DateTimeField(auto_now_add=False,default=Invaliddate)
 	status=models.IntegerField(help_text="enter status",default=0)
-	reopened_date_time=models.DateTimeField(auto_now_add=True)
+	reopened_date_time=models.DateTimeField(auto_now_add=False,default=Invaliddate)
 	topic_priority=models.IntegerField(help_text="enter priority",default=1)
 	duration_for_reply=models.IntegerField(help_text="enter duration for reply",default=24)
         
