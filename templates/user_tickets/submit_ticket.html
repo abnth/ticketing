@@ -1,0 +1,23 @@
+{% extends 'index.html' %} 
+{% block body_block %}
+	<div class="container-fluid">
+        <form class="navbar-form navbar-left" role="search" id="user_form" method="post" action="/user_tickets/submit_ticket/">
+            {% csrf_token %}
+            <h2>Submit your issue here</h2><br />select your user name
+	    {%for hidden in user_form.hidden_fields%}
+		{{hidden}}
+	    {%endfor%} 
+            {% for field in submit_ticket_form.visible_fields %}
+            {{ field.errors }}
+            {{ field.help_text }}
+	<div class="form-group">
+            {{ field }}
+	 </div>
+	<br />
+            {% endfor %}
+		<br />
+            <!-- Provide a button to click to submit the form. -->
+            <input class="btn btn-default" type="submit" name="submit" value="Submit Issue"/>
+        </form>
+	</div>
+{% endblock %}
