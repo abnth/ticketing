@@ -3,7 +3,7 @@
 	<div class="container-fluid">
         <form class="navbar-form navbar-left" role="search" id="user_form" method="post" action="/user_tickets/submit_ticket/">
             {% csrf_token %}
-            <h2>Submit your issue here</h2><br />select your user name
+            <h2>Submit your issue here</h2><br />
 	    {%for hidden in user_form.hidden_fields%}
 		{{hidden}}
 	    {%endfor%} 
