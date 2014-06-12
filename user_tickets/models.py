@@ -119,6 +119,7 @@ class Comment(models.Model):
 class Ticket(models.Model):
 	user_id=models.EmailField()
 	topic_id=models.ForeignKey(Category)
+	tab_id=models.IntegerField(blank=False)
 	message=models.TextField(help_text="enter message")
 	ticket_id = models.AutoField(primary_key=True)
 	created_date_time=models.DateTimeField(auto_now_add=False,default=Date)

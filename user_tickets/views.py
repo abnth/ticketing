@@ -15,13 +15,18 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 
+@login_required
 def submit_ticket(request):
     if request.method=="POST":
         print request.POST
 	if request.user.email!=request.POST["user_id"]:
-		return render_to_response('user_tickets/email_not_valid.html',
-                    RequestContext(request))
+		return render_to_response('user_tickets/email_not_valid.html',{"message":"Please enter a valid email id; the email id you used during registration!"},RequestContext(request))
         if request.user.is_authenticated() and request.user.email==request.POST["user_id"]:
+	    user_tab_id=request.POST["tab_id"]
+	    #if user_tab_id.length()==8:
+		#TODO validate the tablet id here
+	    if len(user_tab_id)!=8:
+		return render_to_response('user_tickets/email_not_valid.html',{"message":"the tablet id you entered is not valid.Please enter a valid tablet id"},RequestContext(request))	
             submit_ticket_form=SubmitTicketForm(request.POST)
             #ticket_user_id=User.objects.get(id=request.user.id)
             #submit_ticket_form.user_id=ticket_user_id
