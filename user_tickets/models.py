@@ -143,6 +143,4 @@ class Tablet_info(models.Model):
 	city=models.CharField(max_length=20)
 
 	def __unicode__(self):
-		return self.start_tab_id,self.end_tab_id
-
-
+		return str(self.start_tab_id)+"-"+str(self.end_tab_id)

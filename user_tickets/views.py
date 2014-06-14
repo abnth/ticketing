@@ -14,6 +14,8 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
+#TODO populate the email field by default
+
 
 @login_required
 def submit_ticket(request):
@@ -27,7 +29,8 @@ def submit_ticket(request):
 		#TODO validate the tablet id here
 	    if len(user_tab_id)!=8:
 		return render_to_response('user_tickets/email_not_valid.html',{"message":"the tablet id you entered is not valid.Please enter a valid tablet id"},RequestContext(request))	
-            submit_ticket_form=SubmitTicketForm(request.POST)
+	    user_details=request.user.email
+            submit_ticket_form=SubmitTicketForm(request.POST,user_details=user_details)
             #ticket_user_id=User.objects.get(id=request.user.id)
             #submit_ticket_form.user_id=ticket_user_id
             
@@ -58,14 +61,16 @@ def submit_ticket(request):
                     {'ticket_id': ticket_id},
                     RequestContext(request))
             else:
-                print "form not valid"
+		#the form does not validate when user enters a tablet_id that is not present in the database
+		return render_to_response('user_tickets/email_not_valid.html',{"message":"the tablet id you entered is not valid.Please enter a valid tablet id"},RequestContext(request))
         else:
             return HttpResponse("login to post")
-    else:
-        submit_ticket_form=SubmitTicketForm()
+    else:#displaying the form for the first time. i think instance variable should be passed here.
+	user_details=request.user.email
+        submit_ticket_form=SubmitTicketForm(user_details=user_details)
     return render_to_response(
     'user_tickets/submit_ticket.html',
-    {'submit_ticket_form': submit_ticket_form},
+    {'submit_ticket_form': submit_ticket_form,'user':request.user},
     RequestContext(request))
 
 
